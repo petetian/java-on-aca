@@ -8,7 +8,9 @@ UNIQUEID=<unique-id>
 
 SUBSCRIPTION=<subscription-id>
 LOCATION=<region>
-
+AI_LOCATION=<region>
+GRAFANA_LOCATION=<region>
+SQL_LOCATION=<region>
 APPNAME=petclinic
 RESOURCE_GROUP=rg-$APPNAME-$UNIQUEID
 
