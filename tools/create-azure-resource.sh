@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-source ./azure-resource.profile
-source ./funcs.sh
+export HOME=/workspaces/java-on-aca
+
+source ./tools/azure-resource.profile
+source ./tools/funcs.sh
 
 # Resource Group
 
