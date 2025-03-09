@@ -11,13 +11,15 @@
 
 UNIQUEID=$(openssl rand -hex 3)
 APPNAME=petclinic
-# RESOURCE_GROUP=rg-$APPNAME-$UNIQUEID
-# LOCATION=<azure-region>
+RESOURCE_GROUP=$(az group list --query "[?contains(name, 'petclinic')].{Name:name}[0]" -o tsv)
 
-if ! az group exists --name RESOURCE_GROUP; then
+if [ -z "$RESOURCE_GROUP" ]; then
+    RESOURCE_GROUP=rg-$APPNAME-$UNIQUEID
+    LOCATION=$(random_element australiaeast brazilsouth eastasia eastus2 japaneast southindia swedencentral westus)
     echo "Creating resource group [$RESOURCE_GROUP] in region [$LOCATION]..."
     az group create -g $RESOURCE_GROUP -l $LOCATION
 else
+    LOCATION=$(az group show --name $RESOURCE_GROUP --query "location" -o tsv)
     echo "Provisioning in resource group [$RESOURCE_GROUP]..."
 fi
 
