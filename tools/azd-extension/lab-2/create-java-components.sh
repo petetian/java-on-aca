@@ -10,8 +10,6 @@ if [ -z "$RESOURCE_GROUP" ]; then
     exit 1
 fi
 
-LOCATION=$(az group show --name $RESOURCE_GROUP --query "location" -o tsv)
-
 # Create the Spring Cloud Config Server Java component. You’ll need to pass the Git repo information you defined back 
 # in the Config repo step to correctly load your configuration information.
 GIT_URI="https://github.com/Azure-Samples/java-on-aca.git"
