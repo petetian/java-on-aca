@@ -1,9 +1,6 @@
 #!/bin/bash
 
-UNIQUEID=$(openssl rand -hex 3)
-APPNAME=petclinic
-
-RESOURCE_GROUP=$(az group list --query "[?contains(name, 'petclinic')].{Name:name}[0]" -o tsv)
+source ./azure-resource.profile
 
 # This script creates an Azure MySQL server and an Azure Container Registry (ACR) in a specified resource group.
 MYSQL_SERVER_NAME=mysql-$APPNAME-$UNIQUEID
