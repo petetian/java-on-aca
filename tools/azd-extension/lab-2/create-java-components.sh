@@ -2,25 +2,12 @@
 #
 # Configure the config, discovery, and admin applications. These are available as built-in components of Azure Container Apps.
 
-APPNAME=petclinic
-RESOURCE_GROUP=$(az group list --query "[?contains(name, 'petclinic')].{Name:name}[0]" -o tsv)
-echo "Resource group: $RESOURCE_GROUP"
-if [ -z "$RESOURCE_GROUP" ]; then
-    echo "Error: Resource group not found."
-    exit 1
-fi
+AZURE_CONFIG_FILE="../config/azure-resource.profile"
+source $AZURE_CONFIG_FILE
 
-# Create the Spring Cloud Config Server Java component. You’ll need to pass the Git repo information you defined back 
-# in the Config repo step to correctly load your configuration information.
-GIT_URI="https://github.com/Azure-Samples/java-on-aca.git"
-SEARCH_PATH="config"
-LABEL=main
-
-# Check if ACA environment name containing string "acalab-env" exists
-ACA_ENVIRONMENT=$(az containerapp env list --resource-group $RESOURCE_GROUP --query "[?contains(name, 'acalab-env')].{Name:name}[0]" -o tsv)
-
+# Check if ACA environment name exists
 if [ -z "$ACA_ENVIRONMENT" ]; then
-    echo "Error: ACA environment containing 'acalab-env' not found."
+    echo "Error: ACA environment not found."
     exit 1
 fi
 
