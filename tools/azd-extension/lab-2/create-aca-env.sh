@@ -7,11 +7,9 @@
 # The script uses the `openssl` command to generate a random unique ID for the resource group and virtual network names.
 # The script uses the `az configure` command to set the default resource group for the Azure CLI commands.
 
-#source ../../azure-resource.profile
-
 UNIQUEID=$(openssl rand -hex 3)
-APPNAME=petclinic
-RESOURCE_GROUP=$(az group list --query "[?contains(name, 'petclinic')].{Name:name}[0]" -o tsv)
+export APPNAME=petclinic
+export RESOURCE_GROUP=$(az group list --query "[?contains(name, 'petclinic')].{Name:name}[0]" -o tsv)
 
 if [ -z "$RESOURCE_GROUP" ]; then
     RESOURCE_GROUP=rg-$APPNAME-$UNIQUEID
@@ -50,9 +48,9 @@ echo "Subnet ID: [$SUBNET_ID]"
 # Creating the service on an Azure Container Apps Dedicated plan using the workload profiles option.
 # This plan gives you more advanced features than the alternative Azure Container Apps Consumption plan type
 #
-ACA_ENVIRONMENT=acalab-env-$APPNAME-$UNIQUEID
+export ACA_ENVIRONMENT=acalab-env-$APPNAME-$UNIQUEID
 
-# winty is to accomodate git bash on Windows
+# winty is to accommodate git bash on Windows
 # Otherwise, SUBNET_ID will be appended with local drive path
 # NO_PATHCOW is for git bash on Windows
 export MSYS_NO_PATHCONV=1
@@ -65,5 +63,21 @@ az containerapp env create \
     --infrastructure-subnet-resource-id "$SUBNET_ID" \
     --logs-destination none
 
-ACA_ENVIRONMENT_ID=$(az containerapp env show -n $ACA_ENVIRONMENT -g $RESOURCE_GROUP --query id -o tsv)
+export ACA_ENVIRONMENT_ID=$(az containerapp env show -n $ACA_ENVIRONMENT -g $RESOURCE_GROUP --query id -o tsv)
 
+# Write variables to the azure-resource.profile
+{
+    echo "RESOURCE_GROUP=$RESOURCE_GROUP"
+    echo "UNIQUEID=$UNIQUEID"
+    echo "APPNAME=$APPNAME"
+    echo "ACA_ENVIRONMENT=$ACA_ENVIRONMENT"
+    echo "ACA_ENVIRONMENT_ID=$ACA_ENVIRONMENT_ID"
+} > ./azure-resource.profile
+
+# Verify that the variables.sh file is created properly
+if [ -f ./azure-resource.profile ]; then
+    echo "azure-resource.profile file created successfully."
+else
+    echo "Error: azure-resource.profile file not created."
+    exit 1
+fi
