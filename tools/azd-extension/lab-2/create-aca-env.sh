@@ -50,6 +50,12 @@ echo "Subnet ID: [$SUBNET_ID]"
 #
 export ACA_ENVIRONMENT=acalab-env-$APPNAME-$UNIQUEID
 
+# If folder ../config does not exist, create it
+if [ ! -d "../config" ]; then
+    mkdir -p ../config
+fi
+AZURE_CONFIG_FILE="../config/azure-resource.profile"
+
 # winty is to accommodate git bash on Windows
 # Otherwise, SUBNET_ID will be appended with local drive path
 # NO_PATHCOW is for git bash on Windows
@@ -72,10 +78,10 @@ export ACA_ENVIRONMENT_ID=$(az containerapp env show -n $ACA_ENVIRONMENT -g $RES
     echo "APPNAME=$APPNAME"
     echo "ACA_ENVIRONMENT=$ACA_ENVIRONMENT"
     echo "ACA_ENVIRONMENT_ID=$ACA_ENVIRONMENT_ID"
-} > ./azure-resource.profile
+} > $AZURE_CONFIG_FILE
 
-# Verify that the variables.sh file is created properly
-if [ -f ./azure-resource.profile ]; then
+# Verify that the azure-resource.profile file is created properly
+if [ -f $AZURE_CONFIG_FILE ]; then
     echo "azure-resource.profile file created successfully."
 else
     echo "Error: azure-resource.profile file not created."
