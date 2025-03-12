@@ -436,4 +436,4 @@ FodyWeavers.xsd
 tools/azd-extension/lab-2/azure-resource.profile
 tools/azd-extension/config/azure-resource.profile
 tools/azd-extension/config/application-mysql.yml
-spring-petclinic-microservices
+spring-petclinic-microservices/*
