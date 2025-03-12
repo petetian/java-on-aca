@@ -47,3 +47,17 @@ az containerapp env java-component admin-for-spring create \
     --bind $JAVA_EUREKA_COMP_NAME \
     --min-replicas 1 \
     --max-replicas 1
+
+# Append the JAVA_EUREKA_COMP_NAME and JAVA_SBA_COMP_NAME to the AZURE_CONFIG_FILE
+{
+    echo "JAVA_EUREKA_COMP_NAME=$JAVA_EUREKA_COMP_NAME"
+    echo "JAVA_SBA_COMP_NAME=$JAVA_SBA_COMP_NAME"
+} >> $AZURE_CONFIG_FILE
+
+# Verify that the variables are appended to the azure-resource.profile file
+if grep -q "JAVA_EUREKA_COMP_NAME" $AZURE_CONFIG_FILE && grep -q "JAVA_SBA_COMP_NAME" $AZURE_CONFIG_FILE; then
+    echo "Variables appended to azure-resource.profile file successfully."
+else
+    echo "Error: Variables JAVA_EUREKA_COMP_NAME JAVA_SBA_COMP_NAME not appended to azure-resource.profile file."
+    exit 1
+fi
