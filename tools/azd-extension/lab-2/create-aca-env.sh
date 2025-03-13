@@ -1,22 +1,16 @@
 #!/bin/bash
 # This script creates an Azure Container Apps environment with a dedicated plan and a virtual network.
 # It also creates a resource group and a virtual network with a subnet for the Azure Container Apps environment.
-# The script uses the Azure CLI to create the resources and requires the user to be logged in to their Azure account.
-# The script also requires the user to have the Azure CLI installed and configured on their machine.
-# The script uses the `az` command to create the resources and requires the user to have the necessary permissions to create resources in their Azure account.
-# The script uses the `openssl` command to generate a random unique ID for the resource group and virtual network names.
-# The script uses the `az configure` command to set the default resource group for the Azure CLI commands.
-
-UNIQUEID=$(openssl rand -hex 3)
-export APPNAME=petclinic
-export RESOURCE_GROUP=$(az group list --query "[?contains(name, 'petclinic')].{Name:name}[0]" -o tsv)
 
 random_element() {
   local array=("$@")
   echo "${array[RANDOM % ${#array[@]}]}"
 }
 
-LOCATION=$(random_element australiaeast brazilsouth eastasia eastus2 japaneast southindia swedencentral westus)
+UNIQUEID=$(openssl rand -hex 3)
+
+export APPNAME=petclinic
+export RESOURCE_GROUP=$(az group list --query "[?contains(name, '$APPNAME')].{Name:name}[0]" -o tsv)
 
 if [ -z "$RESOURCE_GROUP" ]; then
     RESOURCE_GROUP=rg-$APPNAME-$UNIQUEID
