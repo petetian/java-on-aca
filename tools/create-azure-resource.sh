@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-export HOME=/workspaces/java-on-aca
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-source ./tools/azure-resource.profile
-source ./tools/funcs.sh
+source $DIR/azure-resource.profile
+source $DIR/funcs.sh
+
+shopt -s expand_aliases
+source $DIR/../.devcontainer/funcs.sh
 
 # Resource Group
 
@@ -29,8 +32,7 @@ else
         --resource-group $RESOURCE_GROUP \
         --location $LOCATION \
         --public-access none \
-        --yes \
-        --output table
+        --yes
 fi
 
 # Azure Container Registry
@@ -105,6 +107,7 @@ fi
 
 # Application Insights
 
+WORKSPACE_ID=$(az monitor log-analytics workspace show -n $WORKSPACE -g $RESOURCE_GROUP --query id -o tsv 2>/dev/null)
 APP_INSIGHTS_ID=$(az monitor app-insights component show --resource-group $RESOURCE_GROUP --app $APP_INSIGHTS_NAME -o tsv --query id 2>/dev/null)
 if [[ -n $APP_INSIGHTS_ID ]]; then
     echo -e "${GREEN}INFO:${NC} Application Insights $APP_INSIGHTS_NAME already exists"
@@ -130,8 +133,8 @@ else
 
     az deployment group create \
         --resource-group $RESOURCE_GROUP \
-        --template-file ../infra/bicep/modules/grafana/grafana-dashboard.bicep \
-        --parameters grafanaName=$GRAFANA_NAME location=$LOCATION \
+        --template-file $DIR/../infra/bicep/modules/grafana/grafana-dashboard.bicep \
+        --parameters grafanaName=$GRAFANA_NAME location=$GRAFANA_LOCATION \
         --output table
 fi
 
