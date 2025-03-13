@@ -23,7 +23,7 @@ else
     echo -e "${YELLOW}INFO:${NC} Creating OpenAI instance $OPEN_AI_SERVICE_NAME in region $AI_LOCATION ..."
 fi
 
-#  deploy the language 
+#  deploy the language model
 az cognitiveservices account deployment create \
    --resource-group $RESOURCE_GROUP \
    --name $OPEN_AI_SERVICE_NAME \
