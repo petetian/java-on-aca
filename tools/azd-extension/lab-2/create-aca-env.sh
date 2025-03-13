@@ -74,6 +74,7 @@ export ACA_ENVIRONMENT_ID=$(az containerapp env show -n $ACA_ENVIRONMENT -g $RES
 # Write variables to the azure-resource.profile
 {
     echo "RESOURCE_GROUP=$RESOURCE_GROUP"
+    echo "LOCATION=$LOCATION"
     echo "UNIQUEID=$UNIQUEID"
     echo "APPNAME=$APPNAME"
     echo "ACA_ENVIRONMENT=$ACA_ENVIRONMENT"
