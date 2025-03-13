@@ -11,6 +11,13 @@ UNIQUEID=$(openssl rand -hex 3)
 export APPNAME=petclinic
 export RESOURCE_GROUP=$(az group list --query "[?contains(name, 'petclinic')].{Name:name}[0]" -o tsv)
 
+random_element() {
+  local array=("$@")
+  echo "${array[RANDOM % ${#array[@]}]}"
+}
+
+LOCATION=$(random_element australiaeast brazilsouth eastasia eastus2 japaneast southindia swedencentral westus)
+
 if [ -z "$RESOURCE_GROUP" ]; then
     RESOURCE_GROUP=rg-$APPNAME-$UNIQUEID
     LOCATION=$(random_element australiaeast brazilsouth eastasia eastus2 japaneast southindia swedencentral westus)
