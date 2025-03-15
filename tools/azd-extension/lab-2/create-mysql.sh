@@ -37,7 +37,7 @@ az mysql flexible-server firewall-rule create \
 echo "
 spring:
     datasource:
-        url: jdbc:mysql://${MYSQL_SERVER_NAME}.mysql.database.azure.com:3306/petclinic?useSSL=true
+        url: jdbc:mysql://${MYSQL_SERVER_NAME}.mysql.database.azure.com:3306/$DATABASE_NAME?useSSL=true
         username: ${MYSQL_ADMIN_USERNAME}
         password: ${MYSQL_ADMIN_PASSWORD}
     sql:

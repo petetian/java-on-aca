@@ -14,7 +14,7 @@ export RESOURCE_GROUP=$(az group list --query "[?contains(name, '$APPNAME')].{Na
 
 if [ -z "$RESOURCE_GROUP" ]; then
     RESOURCE_GROUP=rg-$APPNAME-$UNIQUEID
-    LOCATION=$(random_element australiaeast brazilsouth eastasia eastus2 japaneast southindia swedencentral westus)
+    LOCATION=westus
     echo "Creating resource group [$RESOURCE_GROUP] in region [$LOCATION]..."
     az group create -g $RESOURCE_GROUP -l $LOCATION
 else

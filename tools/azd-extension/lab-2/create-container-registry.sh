@@ -15,8 +15,6 @@
 AZURE_CONFIG_FILE="../config/azure-resource.profile"
 source $AZURE_CONFIG_FILE
 
-APPNAME=petclinic
-
 # Check if a container registry containing the string $APPNAME already exists
 MYACR=$(az acr list --resource-group $RESOURCE_GROUP --query "[?contains(name, '$APPNAME')].{Name:name}[0]" -o tsv)
 
