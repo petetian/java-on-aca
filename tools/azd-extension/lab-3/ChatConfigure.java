@@ -1,35 +1,34 @@
-// filepath: /workspaces/java-on-aca/tools/spring-petclinic-chat-service/src/main/java/org/springframework/ai/azure/openai/ChatConfigure.java
-package org.springframework.ai.azure.openai;
+package org.springframework.samples.petclinic.chat;
 
-import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.OpenAIServiceVersion;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.policy.HttpLogOptions;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Configuration
 public class ChatConfigure {
 
-    @Bean
-    public OpenAIClientBuilder openAIClientBuilder() {
-        return new OpenAIClientBuilder()
-            .credential(new AzureKeyCredential(System.getenv("AZURE_OPENAI_API_KEY")))
-            .endpoint(System.getenv("AZURE_OPENAI_ENDPOINT"))
-            .serviceVersion(OpenAIServiceVersion.V2024_02_15_PREVIEW)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(com.azure.core.http.policy.HttpLogDetailLevel.BODY_AND_HEADERS));
-    }
+    private static final Logger logger = LoggerFactory.getLogger(ChatConfigure.class);
 
     @Bean
-    public AzureOpenAiChatModel azureOpenAiChatModel(OpenAIClientBuilder openAIClientBuilder) {
-        return AzureOpenAiChatModel.builder()
-            .openAIClientBuilder(openAIClientBuilder)
-            .defaultOptions(AzureOpenAiChatOptions.builder().deploymentName("gpt-4o").maxTokens(1000).build())
-            .build();
-    }
+    public ChatClient chatClient() {
+        String endpoint = System.getenv("AZURE_OPENAI_ENDPOINT");
+        String apiKey = System.getenv("AZURE_OPENAI_API_KEY");
+        
+        // Debug logging to verify the environment variables
+        logger.info("AZURE_OPENAI_API_KEY: {}", apiKey);
+        logger.info("AZURE_OPENAI_ENDPOINT: {}", endpoint);
 
-    @Bean
-    public ChatClient chatClient(AzureOpenAiChatModel azureOpenAiChatModel) {
-        return ChatClient.builder(azureOpenAiChatModel).build();
+        if (apiKey == null || apiKey.isEmpty()) {
+            throw new IllegalArgumentException("AZURE_OPENAI_API_KEY environment variable is not set");
+        }
+        if (endpoint == null || endpoint.isEmpty()) {
+            throw new IllegalArgumentException("AZURE_OPENAI_ENDPOINT environment variable is not set");
+        }
+
+        // return new ChatClient(endpoint, apiKey);
+        return new ChatClient("https://open-ai-account-3537fb.openai.azure.com/", "efd6975f0ac847c0802479692e06a226");
     }
 }
