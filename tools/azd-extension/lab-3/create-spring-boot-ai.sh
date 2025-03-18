@@ -98,4 +98,4 @@ CHAT_URL=$(az containerapp show \
 
 echo "Chat service URL: $CHAT_URL"
 
-curl -XPOST https://$CHAT_URL/chatclient -d 'Hi, tell a joke'
+curl https://$CHAT_URL/ai/generate
