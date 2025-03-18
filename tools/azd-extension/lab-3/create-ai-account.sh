@@ -5,6 +5,8 @@ source $AZURE_CONFIG_FILE
 AI_LOCATION=$LOCATION
 
 OPEN_AI_SERVICE_NAME=open-ai-account-$UNIQUEID
+
+# Create a new Azure Cognitive Services account
 az cognitiveservices account create \
    --resource-group $RESOURCE_GROUP \
    --name $OPEN_AI_SERVICE_NAME \
