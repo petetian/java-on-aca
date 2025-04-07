@@ -19,6 +19,9 @@ az configure --default group=$RESOURCE_GROUP
 
 # MySQL server
 
+# Random regions for MySQL server
+SQL_LOCATION=$(random_element australiaeast brazilsouth eastasia eastus2 japaneast southindia swedencentral westus)
+
 SQL_ID=$(az mysql flexible-server show --resource-group $RESOURCE_GROUP --name $MYSQL_SERVER_NAME -o tsv --query id 2>/dev/null)
 if [[ -n $SQL_ID ]]; then
     echo -e "${GREEN}INFO:${NC} MySQL server $MYSQL_SERVER_NAME already exists"
